@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Pack Game</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ===================== HOME SCREEN ===================== -->
+  <section id="screen-home" class="screen active">
+    <div class="home-top">
+      <img src="nameTitle.png" alt="Card Pack Game" class="title-img">
+      <img src="subtitle.png" alt="Card Pack Game" class="subtitle-img">
+      
+    </div>
+    <div class="home-buttons">
+      <button id="btn-select-pack" class="btn-img"><img src="btn-select-pack.png" alt="Select a Pack"></button>
+      <button id="btn-view-all" class="btn-img"><img src="btn-view-all.png" alt="View All"></button>
+    </div>
+  </section>
+
+  <!-- ===================== VIEW ALL SCREEN ===================== -->
+  <section id="screen-viewall" class="screen">
+    <button class="back-img-btn" data-target="screen-home"><img src="btn-back.png" alt="Back"></button>
+    <h2 class="page-title">Your Collection</h2>
+    <div class="grid-15" id="viewall-grid"></div>
+  </section>
+
+  <!-- ===================== SELECT PACK SCREEN ===================== -->
+  <section id="screen-select" class="screen">
+    <button class="back-img-btn" data-target="screen-home"><img src="btn-back.png" alt="Back"></button>
+    <h2 class="page-title">Please choose the pack you want:</h2>
+    <div class="carousel" id="carousel">
+      <button class="arrow arrow-left" id="arrow-left" aria-label="Previous">&#10094;</button>
+      <div class="carousel-track" id="carousel-track"></div>
+      <button class="arrow arrow-right" id="arrow-right" aria-label="Next">&#10095;</button>
+    </div>
+  </section>
+
+  <!-- ===================== PACK DETAIL SCREEN ===================== -->
+  <section id="screen-packdetail" class="screen">
+    <button class="back-img-btn" id="detail-back"><img src="btn-back.png" alt="Back"></button>
+    <div class="pack-detail-content">
+      <div class="pack-cover-lg holo-shine" id="detail-cover-wrap">
+        <img id="detail-cover-img" src="" alt="pack cover">
+      </div>
+      <button id="choose-pack-btn" class="btn-img"><img src="btn-choose-pack.png" alt="Choose this One"></button>
+    </div>
+  </section>
+
+  <!-- ===================== CARD REVEAL SCREEN ===================== -->
+  <section id="screen-reveal" class="screen">
+    <button class="back-img-btn" id="reveal-back"><img src="btn-back.png" alt="Back"></button>
+    <div class="reveal-top">
+      <p class="reveal-counter" id="reveal-counter">Card 1/5</p>
+    </div>
+
+    <div class="reveal-carousel">
+      <button class="arrow arrow-left" id="reveal-arrow-left" aria-label="Previous card">&#10094;</button>
+
+      <div class="card-flip-wrapper" id="card-flip-wrapper">
+        <div class="card-flip" id="card-flip">
+          <div class="card-face card-back">
+            <img src="back.png" alt="" class="card-back-img">
+          </div>
+          <div class="card-face card-front" id="card-front">
+            <img id="card-front-img" src="" alt="card">
+          </div>
+        </div>
+      </div>
+
+      <button class="arrow arrow-right" id="reveal-arrow-right" aria-label="Next card">&#10095;</button>
+    </div>
+
+    <p class="tap-reveal-text" id="tap-reveal-text">TAP TO REVEAL</p>
+
+    <div class="reveal-bottom">
+      <button class="btn-img" id="view-results-btn" style="display:none;"><img src="btn-view-results.png" alt="View Results"></button>
+    </div>
+  </section>
+
+  <!-- ===================== RESULTS SCREEN ===================== -->
+  <section id="screen-results" class="screen">
+    
+    <h2 class="page-title">Opening Results</h2>
+    <div class="pyramid" id="pyramid-grid"></div>
+    <div class="results-buttons">
+      <button id="open-another-btn" class="btn-img"><img src="btn-open-another.png" alt="Open Another"></button>
+      <button id="results-view-all-btn" class="btn-img"><img src="btn-view-all.png" alt="View All"></button>
+    </div>
+  </section>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,626 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+  --card-w: 420px;
+  --card-h: 588px;
+
+  /* foil / holo accent trio used across pack covers, holo effect and buttons */
+  --foil-cyan: #4fd8e8;
+  --foil-mag: #f472b6;
+  --foil-gold: #ffcf6b;
+
+  
+  --font-display: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+  --font-body: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+
+  --text: #170f2c;
+  --text-mute: #6f6b7d;
+  --line: rgba(23, 15, 44, 0.14);
+
+  --text-black: #111111;
+  --page-bg: linear-gradient(100deg, #cae0fb, #f7b2b2);
+  
+
+  --radius-lg: 22px;
+  --radius-md: 16px;
+}
+
+*{ box-sizing: border-box; }
+
+html, body{
+  margin: 0;
+  padding: 0;
+  background: var(--page-bg);
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+  color: var(--text-black);
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app{
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.screen{
+  display: none;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--page-bg);
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 32px 20px 40px;
+}
+
+.screen.active{
+  display: flex;
+}
+
+.page-title{
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 500;
+  margin: 8px 0 8px;
+  letter-spacing: 0.3px;
+  color: var(--text);
+}
+
+/* ===================== BUTTONS ===================== */
+.btn{
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 16px;
+  padding: 17px 20px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+}
+.btn:active{ transform: scale(0.97); }
+
+.btn-primary{
+  color: #170f2c;
+  background: linear-gradient(100deg, var(--foil-cyan), var(--foil-mag) 55%, var(--foil-gold));
+  background-size: 220% 100%;
+  background-position: 0% 0%;
+  box-shadow: 0 10px 30px -10px rgba(244, 114, 182, 0.55);
+}
+.btn-primary:hover{ background-position: 100% 0%; }
+
+.btn-black{
+  color: #ffffff;
+  background: #111111;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.55);
+}
+.btn-black:hover{ filter: brightness(1.25); }
+
+.btn-ghost{
+  color: var(--text);
+  background: rgba(23, 15, 44, 0.04);
+  border: 1px solid var(--line);
+}
+.btn-ghost:hover{ background: rgba(23, 15, 44, 0.08); }
+
+.btn-primary:disabled, .btn-black:disabled, .btn-ghost:disabled{
+  opacity: 0.35;
+  cursor: default;
+  transform: none;
+  filter: none;
+}
+
+.btn-text{
+  background: none;
+  color: var(--text-mute);
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px;
+  width: auto;
+  max-width: none;
+  box-shadow: none;
+}
+.btn-text:hover{ color: var(--text); }
+
+.btn-img{
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  width: 100%;
+  max-width: 320px;
+  display: block;
+  line-height: 0;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.btn-img img{
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+}
+
+.btn-img:hover{
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.btn-img:active{
+  transform: scale(0.97);
+}
+
+.back-img-btn{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  width: 130px;
+  z-index: 10;
+  line-height: 0;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.back-img-btn img{
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+}
+
+.back-img-btn:hover{
+  transform: translateX(-3px);
+  filter: brightness(1.1);
+}
+
+.back-img-btn:active{
+  transform: scale(0.92);
+}
+
+/* ===================== HOME ===================== */
+#screen-home{
+  justify-content: space-between;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  min-height: 100vh;
+  background-image: url('background2.png');
+  background-size: cover;
+  background-position: center center;
+}
+
+.home-top{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  margin: 0 auto;
+}
+
+.title-img{
+  max-width: min(620px, 82vw);
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-top: 30px;
+  align-items: center;
+}
+
+.subtitle-img{
+  max-width: min(240px, 75vw);
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-top: -30px;
+  align-items: center;
+}
+
+.logo-img{
+  max-width: min(220px, 55vw);
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.home-buttons{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 40px;
+  width: 100%;
+}
+
+/* ===================== VIEW ALL GRID ===================== */
+.grid-15{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 18px;
+  max-width: 1100px;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.card-slot{
+  aspect-ratio: 750 / 1050;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+}
+
+.card-slot img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--radius-md);
+}
+
+.card-slot.empty{
+  background: #111111;
+  border: 2px solid #111111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-slot.empty::before{
+  content: "?";
+  color: #ffffff;
+  font-size: 5rem;
+  font-weight: 500;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+}
+
+/* ===================== HOLO SHINE EFFECT ===================== */
+.holo-shine{
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.holo-shine::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 25%,
+    rgba(255,255,255,0.75) 38%,
+    rgba(255,110,190,0.45) 46%,
+    rgba(110,180,255,0.45) 54%,
+    transparent 68%
+  );
+  background-size: 260% 260%;
+  mix-blend-mode: overlay;
+  animation: holoShift 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes holoShift{
+  0%{ background-position: 0% 0%; }
+  50%{ background-position: 100% 100%; }
+  100%{ background-position: 0% 0%; }
+}
+
+.legendary{
+  position: relative;
+}
+
+.legendary::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: conic-gradient(from 0deg, #ff7ac9, #ffd76a, #7affc0, #6ec4ff, #9b5cff, #ff7ac9);
+  mix-blend-mode: color-dodge;
+  opacity: 0.5;
+  animation: legendSpin 4.5s linear infinite;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+@keyframes legendSpin{
+  0%{ transform: rotate(0deg); }
+  100%{ transform: rotate(360deg); }
+}
+
+/* ===================== CAROUSEL (SELECT PACK) ===================== */
+.carousel{
+  position: relative;
+  width: 100%;
+  max-width: 1040px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0 10px;
+}
+
+.carousel-track{
+  position: relative;
+  width: 100%;
+  height: calc(var(--card-h) + 20px);
+}
+
+.pack-card{
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: var(--card-w);
+  height: var(--card-h);
+  margin-left: calc(var(--card-w) / -2);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: transform 0.45s cubic-bezier(.22,.9,.35,1), opacity 0.45s ease, z-index 0s;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+  background: #eee;
+}
+
+.pack-card img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  display: block;
+  pointer-events: none;
+}
+
+.pack-card.pos-center{
+  transform: translateX(0) scale(1);
+  z-index: 3;
+  opacity: 1;
+}
+
+.pack-card.pos-left{
+  transform: translateX(-250px) scale(0.8);
+  z-index: 2;
+  opacity: 0.8;
+}
+
+.pack-card.pos-right{
+  transform: translateX(250px) scale(0.8);
+  z-index: 2;
+  opacity: 0.8;
+}
+
+.arrow{
+  background: #111111;
+  color: #fff;
+  border: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 5;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.arrow:hover{
+  transform: scale(1.1);
+  background: #333;
+}
+
+/* ===================== PACK DETAIL ===================== */
+.pack-detail-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  margin-top: 40px;
+}
+
+.pack-cover-lg{
+  width: var(--card-w);
+  height: var(--card-h);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 16px 34px rgba(0,0,0,0.2);
+}
+
+.pack-cover-lg img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===================== CARD REVEAL ===================== */
+.reveal-top{
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.reveal-instructions{
+  font-size: 0.95rem;
+  color: #444;
+  margin: 0 0 8px;
+  font-weight: 500;
+}
+
+.reveal-counter{
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.reveal-carousel{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 10px;
+  margin-bottom: 100px;
+}
+
+.card-flip-wrapper{
+  width: var(--card-w);
+  height: var(--card-h);
+  perspective: 1400px;
+}
+
+.card-flip{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.7s cubic-bezier(.3,.9,.35,1);
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.card-flip.flipped{
+  transform: rotateY(180deg);
+}
+
+.card-face{
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  backface-visibility: hidden;
+  overflow: hidden;
+  box-shadow: 0 16px 34px rgba(0,0,0,0.22);
+}
+
+.card-back{
+  /* shows while card-back.png loads, and behind it if the png has transparency */
+  background: linear-gradient(145deg, var(--foil-cyan), var(--foil-mag) 55%, var(--foil-gold));
+}
+
+.card-back-img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-front{
+  transform: rotateY(180deg);
+  background: #fff;
+}
+
+.card-front img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tap-reveal-text{
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-top: -90px;
+  color: #333;
+  min-height: 1em;
+  
+}
+
+.reveal-bottom{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+  margin-top: -20px;
+}
+
+.results-buttons{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 460px;
+}
+
+.results-buttons .btn-img{
+  width: auto;
+  flex: 1 1 0;
+  max-width: 220px;
+}
+
+/* ===================== RESULTS (PYRAMID) ===================== */
+.pyramid{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+
+.pyramid-row{
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.pyramid-card{
+  width: 200px;
+  height: 280px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.pyramid-card img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 700px){
+  .carousel-track{
+    transform: scale(0.55);
+    transform-origin: top center;
+    height: calc(var(--card-h) + 20px);
+  }
+  .reveal-carousel{
+    transform: scale(0.55);
+    transform-origin: top center;
+  }
+  .grid-15{
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    max-width: 420px;
+  }
+  .pyramid-card{
+    width: 120px;
+    height: 168px;
+  }
+  .pyramid-row{
+    gap: 12px;
+  }
+  .pyramid{
+    gap: 12px;
+  }
+}
+
+@media (max-width: 420px){
+  .grid-15{
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
