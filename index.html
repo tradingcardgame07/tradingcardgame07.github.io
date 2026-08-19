@@ -21,18 +21,24 @@
       <button id="btn-select-pack" class="btn-img"><img src="btn-select-pack.png" alt="Select a Pack"></button>
       <button id="btn-view-all" class="btn-img"><img src="btn-view-all.png" alt="View All"></button>
     </div>
+    <audio id="home-audio" loop>
+      <source src="HomePage.mp3" type="audio/mpeg">
+    </audio>
   </section>
 
   <!-- ===================== VIEW ALL SCREEN ===================== -->
   <section id="screen-viewall" class="screen">
-    <button class="back-img-btn" data-target="screen-home"><img src="btn-back.png" alt="Back"></button>
+    <button class="back-img-btn" data-target="screen-home"><img src="btn-home.png" alt="Back"></button>
     <h2 class="page-title">Your Collection</h2>
     <div class="grid-15" id="viewall-grid"></div>
+    <audio id="viewall-audio" loop>
+      <source src="CardCollection.mp3" type="audio/mpeg">
+    </audio>
   </section>
 
   <!-- ===================== SELECT PACK SCREEN ===================== -->
   <section id="screen-select" class="screen">
-    <button class="back-img-btn" data-target="screen-home"><img src="btn-back.png" alt="Back"></button>
+    <button class="back-img-btn" data-target="screen-home"><img src="btn-home.png" alt="Back"></button>
     <h2 class="page-title">Please choose the pack you want:</h2>
     <div class="carousel" id="carousel">
       <button class="arrow arrow-left" id="arrow-left" aria-label="Previous">&#10094;</button>
@@ -90,9 +96,20 @@
     <div class="pyramid" id="pyramid-grid"></div>
     <div class="results-buttons">
       <button id="open-another-btn" class="btn-img"><img src="btn-open-another.png" alt="Open Another"></button>
-      <button id="results-view-all-btn" class="btn-img"><img src="btn-view-all.png" alt="View All"></button>
+      <button id="results-view-all-btn" class="btn-img"><img src="btn-plain-view.png" alt="View All"></button>
     </div>
   </section>
+
+  <!-- ===================== SHARED AUDIO (spans multiple screens) ===================== -->
+  <audio id="choosepack-audio" loop>
+    <source src="ChoosePack.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="cardreveal-audio" loop>
+    <source src="CardReveal.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="legendpull-audio">
+    <source src="LegendPull.mp3" type="audio/mpeg">
+  </audio>
 
 </div>
 

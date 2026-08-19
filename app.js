@@ -39,11 +39,80 @@ function markCardOpened(fileName) {
 // NAVIGATION
 // =====================================================================
 
+// Screens across which these two tracks should keep playing without
+// restarting when the user moves between the paired screens.
+const CHOOSE_PACK_SCREENS = ['screen-select', 'screen-packdetail'];
+const CARD_REVEAL_SCREENS = ['screen-reveal', 'screen-results'];
+
+function getActiveScreenId() {
+  const el = document.querySelector('.screen.active');
+  return el ? el.id : null;
+}
+
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0, 0);
+
+const viewallAudio = document.getElementById('viewall-audio');
+if (viewallAudio) {
+  if (id === 'screen-viewall') {
+    viewallAudio.currentTime = 0;
+    viewallAudio.play().catch(() => {
+      // Browser blocked autoplay (rare, since this runs from a click handler) - ignore.
+    });
+  } else {
+    viewallAudio.pause();
+  }
 }
+const homeAudio = document.getElementById('home-audio');
+if (homeAudio) {
+  if (id === 'screen-home') {
+    homeAudio.currentTime = 0;
+    homeAudio.play().then(() => {
+      console.log('[audio] home-audio started via showScreen navigation.');
+    }).catch((err) => {
+      console.error('[audio] home-audio failed via showScreen navigation:', err.name, err.message);
+    });
+  } else {
+    homeAudio.pause();
+  }
+}
+
+// ChoosePack.mp3: plays across Select Pack + Pack Detail, without
+// restarting when moving between just those two screens.
+const choosepackAudio = document.getElementById('choosepack-audio');
+if (choosepackAudio) {
+  if (CHOOSE_PACK_SCREENS.includes(id)) {
+    if (choosepackAudio.paused) {
+      choosepackAudio.play().catch((err) => {
+        console.error('[audio] choosepack-audio failed to play:', err.name, err.message);
+      });
+    }
+  } else {
+    choosepackAudio.pause();
+    choosepackAudio.currentTime = 0;
+  }
+}
+
+// CardReveal.mp3: plays across Card Reveal + Results, without restarting
+// when moving between just those two screens. The legendary-pull
+// interruption is handled separately in flipCurrentCard().
+const cardRevealAudio = document.getElementById('cardreveal-audio');
+if (cardRevealAudio) {
+  if (CARD_REVEAL_SCREENS.includes(id)) {
+    if (cardRevealAudio.paused) {
+      cardRevealAudio.play().catch((err) => {
+        console.error('[audio] cardreveal-audio failed to play:', err.name, err.message);
+      });
+    }
+  } else {
+    cardRevealAudio.pause();
+    cardRevealAudio.currentTime = 0;
+  }
+}
+}
+
 
 // =====================================================================
 // VIEW ALL SCREEN
@@ -210,9 +279,40 @@ function renderRevealCard() {
 
 function flipCurrentCard() {
   if (revealedFlags[revealIndex]) return; // already revealed, tapping does nothing further
+  const fileName = currentPackCards()[revealIndex];
   revealedFlags[revealIndex] = true;
-  markCardOpened(currentPackCards()[revealIndex]);
+  markCardOpened(fileName);
   renderRevealCard();
+
+  if (LEGENDARY_CARDS.includes(fileName)) {
+    playLegendPull();
+  }
+}
+
+// Interrupts CardReveal.mp3 for a one-shot legendary pull sound, then
+// resumes CardReveal.mp3 once it finishes - as long as the user is still
+// somewhere in the reveal/results flow by then.
+function playLegendPull() {
+  const cardRevealAudio = document.getElementById('cardreveal-audio');
+  const legendPullAudio = document.getElementById('legendpull-audio');
+  if (!legendPullAudio) return;
+
+  if (cardRevealAudio) {
+    cardRevealAudio.pause();
+  }
+
+  legendPullAudio.currentTime = 0;
+  legendPullAudio.play().catch((err) => {
+    console.error('[audio] legendpull-audio failed to play:', err.name, err.message);
+  });
+
+  const resumeCardReveal = () => {
+    legendPullAudio.removeEventListener('ended', resumeCardReveal);
+    if (cardRevealAudio && CARD_REVEAL_SCREENS.includes(getActiveScreenId())) {
+      cardRevealAudio.play().catch(() => {});
+    }
+  };
+  legendPullAudio.addEventListener('ended', resumeCardReveal);
 }
 
 function moveReveal(direction) {
@@ -265,6 +365,40 @@ function renderResults() {
 document.addEventListener('DOMContentLoaded', () => {
 
   // Home
+  const homeAudioOnLoad = document.getElementById('home-audio');
+  if (homeAudioOnLoad) {
+    console.log('[audio] home-audio element found. src:', homeAudioOnLoad.currentSrc || homeAudioOnLoad.querySelector('source')?.src);
+    homeAudioOnLoad.addEventListener('error', () => {
+      const err = homeAudioOnLoad.error;
+      console.error('[audio] home-audio failed to load. code:', err && err.code, '(1=ABORTED, 2=NETWORK, 3=DECODE, 4=SRC_NOT_SUPPORTED/NOT_FOUND)');
+    });
+
+    // Browsers block audio with sound from playing before any user
+    // interaction, but they DO allow autoplay if it starts muted. So we start
+    // it muted right away (so it's already mid-track, in sync) and just flip
+    // muted off on the very first tap - no restart, minimal perceived delay.
+    homeAudioOnLoad.muted = true;
+    homeAudioOnLoad.play().then(() => {
+      console.log('[audio] home-audio autoplaying muted on page load.');
+    }).catch((err) => {
+      console.warn('[audio] even muted autoplay was blocked:', err.name, err.message);
+    });
+
+    const unmuteOnFirstInteraction = () => {
+      homeAudioOnLoad.muted = false;
+      if (homeAudioOnLoad.paused && document.getElementById('screen-home').classList.contains('active')) {
+        homeAudioOnLoad.play().catch(() => {});
+      }
+      console.log('[audio] home-audio unmuted after first interaction.');
+      document.removeEventListener('click', unmuteOnFirstInteraction, true);
+      document.removeEventListener('touchstart', unmuteOnFirstInteraction, true);
+    };
+    document.addEventListener('click', unmuteOnFirstInteraction, true);
+    document.addEventListener('touchstart', unmuteOnFirstInteraction, true);
+  } else {
+    console.error('[audio] no element with id="home-audio" found in the DOM.');
+  }
+  
   document.getElementById('btn-select-pack').addEventListener('click', () => {
     carouselCenterIndex = 0;
     renderCarousel();
